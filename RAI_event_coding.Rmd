@@ -1,0 +1,111 @@
+---
+title: "RAI_event_coding"
+author: "Luke Sheppard"
+date: "2025-03-24"
+output: html_document
+---
+
+```{r setup}
+knitr::opts_knit$set(root.dir = "C:/Users/lukes/Documents")
+```
+
+```{r}
+#trade_agreement_exchange
+library(tidyverse)
+
+dat = readxl::read_xlsx("C:/Users/lukes/OneDrive/Documents/RAI_retrain_trade_agreement_exchange.xlsx")
+
+datm = dat %>%
+  select(`_id`, title_translated, maintext_translated) %>%
+  mutate(gpt_coding = "") %>%
+  slice(1500:1600) %>%
+  mutate(bullet = paste0("* ", 
+                         title_translated, ": ", 
+                         str_sub(maintext_translated, 1, 600))) %>%
+  summarize(all_bullets = paste(bullet, collapse = "\n")) %>%
+  pull(all_bullets)
+
+prompt = "I have an important coding task that I would like you to complete. I'm going to give you a list of news articles that have been translated into English. For each article, I'll give you the title and a chunk of the main text. Please read the text that I provide and code each article according to the definition below.\n 
+> Articles reporting on efforts by governments to increase the amount of trade or economic exchange with a separate country. This can also refer to the cancellation of such efforts.\n
+For each article, provide a 'Yes' or 'No' answer indicating whether the article meets the definition. Please give 1 sentence describing your reasoning."
+
+c(prompt, "\n", datm) %>%
+  write_lines('C:/Users/lukes/OneDrive/Documents/gpt_input.txt')
+```
+
+```{r}
+#trade_financial_sanction 
+library(tidyverse)
+
+dat2 = readxl::read_xlsx("C:/Users/lukes/OneDrive/Documents/RAI_retrain_trade_financial_sanction.xlsx")
+
+datm2 = dat2 %>%
+  select(`_id`, title_translated, maintext_translated) %>%
+  mutate(gpt_coding = "") %>%
+  slice(1500:1600) %>%
+  mutate(bullet = paste0("* ", 
+                         title_translated, ": ", 
+                         str_sub(maintext_translated, 1, 600))) %>%
+  summarize(all_bullets = paste(bullet, collapse = "\n")) %>%
+  pull(all_bullets)
+
+prompt2 = "I have an important coding task that I would like you to complete. I'm going to give you a list of news articles that have been translated into English. For each article, I'll give you the title and a chunk of the main text. Please read the text that I provide and code each article according to the definition below.\n 
+> Articles reporting on efforts by one government to restrict or regulate economic engagement or financial transactions with individuals, companies, or government entities in another country. This can also refer to the cancellation of such efforts.\n
+For each article, provide a 'Yes' or 'No' answer indicating whether the article meets the definition. Please give 1 sentence describing your reasoning."
+
+c(prompt2, "\n", datm2) %>%
+  write_lines('C:/Users/lukes/OneDrive/Documents/gpt_input2.txt')
+```
+
+```{r}
+#diplomatic_action
+library(tidyverse)
+
+dat3 = readxl::read_xlsx("C:/Users/lukes/OneDrive/Documents/RAI_retrain_diplomatic_sanction.xlsx")
+
+datm3 = dat3 %>%
+  select(`_id`, title_translated, maintext_translated) %>%
+  mutate(gpt_coding = "") %>%
+  slice(1500:1600) %>%
+  mutate(bullet = paste0("* ", 
+                         title_translated, ": ", 
+                         str_sub(maintext_translated, 1, 600))) %>%
+  summarize(all_bullets = paste(bullet, collapse = "\n")) %>%
+  pull(all_bullets)
+
+prompt3 = "I have an important coding task that I would like you to complete. I'm going to give you a list of news articles that have been translated into English. For each article, I'll give you the title and a chunk of the main text. Please read the text that I provide and code each article according to the definition below.\n 
+> Articles reporting on the implementation or removal of punitive diplomatic actions or restrictions imposed by one country on another country’s government or citizens, including things like expelling diplomats or imposing travel bans. This excludes trade and financial sanctions.\n
+For each article, provide a 'Yes' or 'No' answer indicating whether the article meets the definition. Please give 1 sentence describing your reasoning."
+
+c(prompt3, "\n", datm3) %>%
+  write_lines('C:/Users/lukes/OneDrive/Documents/gpt_input3.txt')
+```
+
+```{r}
+#foreign_aid_assistance
+library(tidyverse)
+
+dat4 = readxl::read_xlsx("C:/Users/lukes/OneDrive/Documents/RAI_retrain_economic_aid_assistance.xlsx")
+
+datm4 = dat4 %>%
+  select(`_id`, title_translated, maintext_translated) %>%
+  mutate(gpt_coding = "") %>%
+  slice(1500:1600) %>%
+  mutate(bullet = paste0("* ", 
+                         title_translated, ": ", 
+                         str_sub(maintext_translated, 1, 600))) %>%
+  summarize(all_bullets = paste(bullet, collapse = "\n")) %>%
+  pull(all_bullets)
+
+prompt4 = "I have an important coding task that I would like you to complete. I'm going to give you a list of news articles that have been translated into English. For each article, I'll give you the title and a chunk of the main text. Please read the text that I provide and code each article according to the definition below.\n 
+> Articles reporting on the provision of aid by one nation to another, including humanitarian aid, development assistance, and economic support. This can also refer to the refusal or withdrawal of such assistance.\n
+For each article, provide a 'Yes' or 'No' answer indicating whether the article meets the definition. Please give 1 sentence describing your reasoning."
+
+c(prompt4, "\n", datm4) %>%
+  write_lines('C:/Users/lukes/OneDrive/Documents/gpt_input4.txt')
+```
+
+
+
+
+
