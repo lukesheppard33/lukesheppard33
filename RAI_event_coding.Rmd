@@ -18,7 +18,7 @@ dat = readxl::read_xlsx("C:/Users/lukes/OneDrive/Documents/RAI_retrain_trade_agr
 datm = dat %>%
   select(`_id`, title_translated, maintext_translated) %>%
   mutate(gpt_coding = "") %>%
-  slice(1500:1600) %>%
+  slice(1:100) %>%
   mutate(bullet = paste0("* ", 
                          title_translated, ": ", 
                          str_sub(maintext_translated, 1, 600))) %>%
