@@ -42,7 +42,7 @@ dat2 = readxl::read_xlsx("C:/Users/lukes/OneDrive/Documents/RAI_retrain_trade_fi
 datm2 = dat2 %>%
   select(`_id`, title_translated, maintext_translated) %>%
   mutate(gpt_coding = "") %>%
-  slice(1500:1600) %>%
+  slice(1801:1901) %>%
   mutate(bullet = paste0("* ", 
                          title_translated, ": ", 
                          str_sub(maintext_translated, 1, 600))) %>%
@@ -66,7 +66,7 @@ dat3 = readxl::read_xlsx("C:/Users/lukes/OneDrive/Documents/RAI_retrain_diplomat
 datm3 = dat3 %>%
   select(`_id`, title_translated, maintext_translated) %>%
   mutate(gpt_coding = "") %>%
-  slice(1500:1600) %>%
+  slice(1400:1600) %>%
   mutate(bullet = paste0("* ", 
                          title_translated, ": ", 
                          str_sub(maintext_translated, 1, 600))) %>%
