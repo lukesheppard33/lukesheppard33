@@ -3,12 +3,13 @@ project:
   output-dir: docs
 
 website:
-  title: "lukesheppard33"
+  title: "Luke Sheppard"
   navbar:
     left:
       - href: index.qmd
         text: Home
       - about.qmd
+      - Final2.qmd
 
 format:
   html:
