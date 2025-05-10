@@ -1,5 +1,5 @@
 ---
-title: "Expanded Research Design"
+title: "Final Project"
 author: "Luke Sheppard"
 institute: "University of Pennsylvania"
 
@@ -28,7 +28,7 @@ Existing literature highlights the possibility of regressive effects due to fore
     
 Although states have information and implementation advantages, due to leakage and fungibility concerns donors often forego budget support and recipient control by circumventing local institutions through project aid delivered by non-governmental organizations (NGOs) (@Reinikka_2004). Due to structural limitations, aid often bypasses state institutions by relying on NGOs contributing to government distrust by interferring with state capacities and citizens' ability to hold politicians accountable. NGO service delivery weaken the "Fiscal Link," the link between state performance and citizen welafre through taxation and public service deliverty, and undermines accountability as politicians get credit for aid disbursements manipualting political attitudes (@Cruz_2016). This undeserved credit claiming varies both on voter information and local oversight and capacity, decreasing accountability pathways in communities with exisiting low responsiveness and entrenching bad state actors (@Baldwin_2023). Foreign aid and its implementation concerns due to leakage further cycles of foreign dependence and local incapacity.
     
-Finally, ignoring recipient pathways, foreign aid is tied to political and economic dynamics in donor countries, much like the current events motivating this paper, which depends on motivations outside of improving recipient outcomes. Governance aid projects, designed to build state capacity and public trust cognizant of the aid dependence debate, may have neglible effects due to aid's impact on political incentives, communication networks, and other community mechanisms to support local trust and legitimacy (@Evans_2021). The transient effect of aid also create misalignments as projects often fail to be translated into systematic or institutional change due to poltical or economic windfalls, scale (conceptual complications in increasing project size to larger population) and implementation (shifting from NGO to government provision) difficulties of projects (@Bold_2018). Indeed, bilateral donors have strategic reasons in aid selection which has rebounded in NGO restriction ws targeting democracy/governance promotion from countries wary of foreign interference and Western imperialism. As the biggest donor, the US has also concentrated aid on legacy and soft power concenrs attempting to win hearts and minds. By providing public service goods such as health and education outcomes, recipient citizens are informed of where aid comes from and often its conditionality. While aid improves trust in foreign institutions, these soft power battles and their implementation through state and non-state actors have lasting effects on institutional capacity. Foreign aid is controlled by outside donors based on percieved recpient corruption and geopolitical importance or donor foreign policy objectives and ignorance. In summary, the exisiting literature recognizes the precarious relationship between foreign aid and quality of government due to leakage, implementation difficulties, and disruptions to state institutions (@Dietrich_2023). 
+Finally, ignoring recipient pathways, foreign aid is tied to political and economic dynamics in donor countries, much like the current events motivating this paper, which depends on motivations outside of improving recipient outcomes. Governance aid projects, designed to build state capacity and public trust cognizant of the aid dependence debate, may have negligible effects due to aid's impact on political incentives, communication networks, and other community mechanisms to support local trust and legitimacy (@Evans_2021). The transient effect of aid also create misalignment as projects often fail to be translated into systematic or institutional change due to political or economic windfalls, scale (conceptual complications in increasing project size to larger population) and implementation (shifting from NGO to government provision) difficulties of projects (@Bold_2018). Indeed, bilateral donors have strategic reasons in aid selection which has rebounded in NGO restriction ws targeting democracy/governance promotion from countries wary of foreign interference and Western imperialism. As the biggest donor, the US has also concentrated aid on legacy and soft power concerns attempting to win hearts and minds. By providing public service goods such as health and education outcomes, recipient citizens are informed of where aid comes from and often its conditionality. While aid improves trust in foreign institutions, these soft power battles and their implementation through state and non-state actors have lasting effects on institutional capacity. Foreign aid is controlled by outside donors based on perceived recipient corruption and geopolitical importance or donor foreign policy objectives and ignorance. In summary, the existing literature recognizes the precarious relationship between foreign aid and quality of government due to leakage, implementation difficulties, and disruptions to state institutions (@Dietrich_2023). 
 
 I plan to analyze US aid projects by category: humanitarian, economic, military, and development, and development sectors: education, governance, healthcare, infrastructure, etc. with perceptions of corruption in a cross country analysis. Although humanitarian and military aid would be expected to target areas specifically in crisis and strategic objectives, economic and development aid would be expected to target countries where poverty prevention and long-term political, social, and economic development seem feasible i.e. sufficient state capacity to implement projects partnering with recipients. NGOs contribute primarily to health, education, agriculture, and social infrastructure costs moreso than government institutions as donors prefer NGOs over local capabilities whenever possible. Donors also recognize instability and local incapacity harming these sectors and the effective rate of return for service delivery. However, NGOs are unable to contribute to industries with hardcore infrastructure cosets such as transportation, energy, water/sanitation, business/trade development, etc. Thus, the impact on citizen perception of government service delivery should center around high cost infrastructure rather than direct delivery service which is often appropriated by NGOs. I am ultimately interested in whether  bilateral development aid is effective and to what extent it fuels petty or elite corruption.
 
@@ -80,6 +80,8 @@ library("readr")
 library("stringr")
 library("skimr")
 library("knitr")
+library("gt")
+library("fixest")
 
 #World Governance Indicators
 wgi <- read_excel("C:/Users/lukes/OneDrive/Documents/GitHub/psci3200_lukesheppard/wgidataset_with_sourcedata.xlsx")
@@ -92,33 +94,140 @@ usaid <- subset(aid, donor_iso == "US")
   usaid <- usaid %>%
   select(-c(4:6, 9, 12:17, 38:68))
 
-#Aggregating aid data by sector
+usaid <- usaid %>%
+  mutate(sector = case_when(
+    crs_sector_name %in% c("I.1.a. Education, Level Unspecified", "I.1.b. Basic Education", "I.1.c. Secondary Education", "I.1.d. Post-Secondary Education") ~ "Education",
+    crs_sector_name %in% c("I.2.a. Health, General", "I.2.b. Basic Health", "I.3. Population Pol./Progr. & Reproductive Health", "I.4. Water Supply & Sanitation") ~ "Health",
+    crs_sector_name %in% c("I.5.a. Government & Civil Society-general", "I.5.b. Conflict, Peace & Security") ~ "Governance",
+    crs_sector_name %in% c("I.6. Other Social Infrastructure & Services") ~ "Social Infrastructure",
+    crs_sector_name %in% c("II.1. Transport & Storage", "II.2. Communications", "II.3. Energy", "II.4. Banking & Financial Services", "II.5. Business & Other Services") ~ "Economic",
+    crs_sector_name %in% c("III.1.a. Agriculture", "III.1.b. Forestry", "III.1.c. Fishing", "III.2.a. Industry", "III.2.b. Mineral Resources & Mining", "III.2.c. Construction", "III.3.a. Trade Policies & Regulations", "III.3.b. Tourism") ~ "Production",
+    crs_sector_name %in% c("VIII.1. Emergency Response", "VIII.2. Reconstruction Relief & Rehabilitation", "VIII.3. Disaster Prevention & Preparedness", "VI.2. Dev. Food Aid/Food Security Ass.", "HUMANITARIAN AID") ~ "Humanitarian",
+    crs_sector_name %in% c("IV.1. General Environment Protection", "IV.2. Other Multisector") ~ "Multisector",
+    crs_sector_name %in% c("VI.1. General Budget Support", "VI.2. Dev. Food Aid/Food Security Ass.", "VI.3. Other Commodity Ass.") ~ "Commodity",
+    crs_sector_name %in% c("VII. Action Relating to Debt") ~ "Debt",
+    TRUE ~ "NA"
+  ))  
+  
+table(usaid$sector)  
+
+usaid <- usaid %>%
+  mutate(sector2 = case_when(
+    sector %in% c("Education", "Social Infrastructure", "Health") ~ "Social Infrastructure",
+    sector %in% c("Commodity", "Debt", "Economic", "Production") ~ "Economic",
+    sector %in% c("NA") ~ NA,
+    TRUE ~ sector
+  ))  
+table(usaid$sector2)
+
+#Aggregating aid data
 usaid_summary <- usaid %>%
-  group_by(recipient, year, crs_sector_name) %>%
+  group_by(recipient, year) %>%
   summarize(aid_commitments = sum(commitment_amount_usd_current, na.rm = TRUE),
   )
-usaid_summary2 <- usaid_summary %>%
+usaid_summary <- usaid_summary %>%
+  rename(countryname = recipient) 
+
+#Aggregating aid data by sector
+usaid_summary2 <- usaid %>%
+  group_by(recipient, year, sector2) %>%
+  summarize(aid_commitments = sum(commitment_amount_usd_current, na.rm = TRUE),
+  )
+usaid_summary2 <- usaid_summary2 %>%
   rename(countryname = recipient,
-         sector = crs_sector_name) %>%
-  filter(sector %in% c("I.5.a. Government & Civil Society-general", "I.3. Population Pol./Progr. & Reproductive Health", "VIII.1. Emergency Response", "I.6. Other Social Infrastructure & Services", "I.2.b. Basic Health"))
+         sector = sector2) 
 
 #Merged dataset
+d <- left_join(wgi, usaid_summary, by = c("countryname", "year"))
+d <- d %>%
+  mutate(log_aid = log10(aid_commitments),
+         index = as.numeric(estimate)) %>%
+  filter(aid_commitments != 0)
+
 d2 <- left_join(wgi, usaid_summary2, by = c("countryname", "year"))
 d2 <- d2 %>%
   mutate(log_aid = log10(aid_commitments),
          index = as.numeric(estimate)) %>%
-  filter(!is.na(sector)) %>%
-  filter(aid_commitments != 0)
+  filter(!is.na(sector),
+         aid_commitments != 0)
 
-#Descriptive statistics
 d4 <- d2 %>%
   select(c(3:4, 49:52))
-summary_table <- skim(d4)
 
-kable(summary_table, caption = "Summary Statistics for Variables")
+#Descriptive statistics
+d5 <- d4 %>%
+  select(c(1,3))
+summary_table <- skim(d5)
+kable(summary_table, caption = "Summary Statistics for Character Variables")
 
-#!!!!!!!Workload: Cleaning and aggregating the sector category, need to explore the various measures and do significant recoding. Need to lag my IV by various measures and lead it. Add country and time fixed effects into my model. Use marginal effects plot and data means to display effects graphically. Create a Github website. Identify worst-case scenarios.
+d6 <- d4 %>%
+  select(c(2, 4:6))
+summary_table2 <- skim(d6)
+kable(summary_table2, digits = 4, caption = "Summary Statistics for Numeric Variables")
 
+summary_by_sector <- d2 %>%
+  group_by(sector) %>%
+  summarize(
+    aid_mean = mean(aid_commitments, na.rm = TRUE),
+    aid_range = max(aid_commitments, na.rm = TRUE) - min(aid_commitments, na.rm = TRUE),
+    aid_sd = sd(aid_commitments, na.rm = TRUE),
+    
+    corruption_mean = mean(index, na.rm = TRUE),
+    corruption_range = max(index, na.rm = TRUE) - min(index, na.rm = TRUE),
+    corruption_sd = sd(index, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+summary_by_sector %>%
+  gt() %>%
+  tab_header(title = "Summary Statistics by Sector") %>%
+  tab_spanner(
+    label = "Aid Commitments",
+    columns = c(aid_mean, aid_range, aid_sd)
+  ) %>%
+  tab_spanner(
+    label = "Corruption Index",
+    columns = c(corruption_mean, corruption_range, corruption_sd)
+  ) %>%
+  fmt_number(
+    columns = 1:6,
+    decimals = 2,
+    use_seps = FALSE
+  ) %>%
+  cols_label(
+    sector = md("Sector"),
+    aid_mean = md("Mean"),
+    aid_range = md("Range"),
+    aid_sd = md("Standard deviation"),
+    corruption_mean = md("Mean"),
+    corruption_range = md("Range"),
+    corruption_sd = md("Standard deviation")
+  ) 
+
+
+#!!!!!!!Workload: Use marginal effects plot and data means to display effects graphically. Identify worst-case scenarios.
+
+d <- d %>%
+  arrange(countryname, year) %>%
+  group_by(countryname) %>%
+  mutate(aid_lag1 = dplyr::lag(log_aid, n = 1),
+         aid_lag2 = dplyr::lag(log_aid, n = 2),
+         aid_lag3 = dplyr::lag(log_aid, n = 3),
+         aid_lag5 = dplyr::lag(log_aid, n = 5),
+         aid_lead1 = dplyr::lead(log_aid, n = 1)
+         ) %>%
+  ungroup()
+
+d4 <- d4 %>%
+  arrange(countryname, year, sector) %>%
+  group_by(countryname, sector) %>%
+  mutate(aid_lag1 = dplyr::lag(log_aid, n = 1),
+         aid_lag2 = dplyr::lag(log_aid, n = 2),
+         aid_lag3 = dplyr::lag(log_aid, n = 3),
+         aid_lag5 = dplyr::lag(log_aid, n = 5),
+         aid_lead1 = dplyr::lead(log_aid, n = 1)
+         ) %>%
+  ungroup()
 ```
 
 ##3c. Regression Model
@@ -173,6 +282,215 @@ ggplot(d2, aes(x = log_aid, y = index)) +
     caption = "Displaying the relationship between aid commitments and corruption separated by sector of aid.\nCorruption scale from -2.5-2.5. Includes all countries globally from 1996-2012"
   ) +
   theme_minimal()
+
+model <- feols(
+  index ~ aid_commitments + aid_lag1 + aid_lead1 | countryname + year,
+  data = d4
+)
+summary(model)
+
+summary(model, cluster = "countryname")
+
+
+
+models <- list()
+models[['Bivariate']] = lm(index ~ log_aid, d4)
+models[['Bivariate2']] = lm(index ~ aid_lag1, d4)
+models[['Bivariate3']] = lm(index ~ aid_lag2, d4)
+models[['Bivariate4']] = lm(index ~ aid_lag3, d4)
+models[['Bivariate5']] = lm(index ~ aid_lag5, d4)
+models[['Bivariate5']] = lm(index ~ aid_lead1, d4)
+models[['Multivariate']] = lm(index ~ log_aid*sector, d4)
+models[['Fixed Effects']] = feols(index ~ log_aid | countryname + year, d4)
+
+library(modelsummary)
+
+modelsummary(models,
+             estimate  = "{estimate}{stars} ({std.error})",
+             statistic = NULL,
+             title = "Title",
+             gof_omit = 'IC|RMSE|Log|F|R2$|Std.')
+
+model5 <- feols(index ~ log_aid*as.factor(sector) | countryname + year, d4)
+model6 <- feols(index ~ aid_lag1*as.factor(sector) | countryname + year, d4)
+
+modelplot(model5, coef_omit = "Intercept", title = "Marginal Effects of Lagged Aid by Sector") +
+  theme_minimal() +
+  labs(
+    x = "Effect on Corruption Index",
+    y = "Sector (Lagged Aid Interaction)",
+    caption = "Positive values = less corruption; Negative = more corruption"
+  )
+
+
+install.packages("ggeffects")
+library(ggeffects)
+library(ggplot2)
+
+predicted <- ggpredict(model5, terms = c("log_aid", "sector"))
+predicted2 <- ggpredict(model6, terms = c("aid_lag1", "sector"))
+head(predicted)
+head(predicted2)
+
+head(predicted)
+ggplot(predicted2, aes(x = x, y = predicted, color = group)) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    title = "Predicted Corruption Index by Lagged Aid and Sector",
+    x = "Lagged Log Aid Commitments",
+    y = "Predicted Corruption Index",
+    color = "Sector",
+    fill = "Sector",
+    caption = "Higher values = less corruption"
+  ) +
+  theme_minimal()
+
+
+
+plot1 <- plot(predicted) +
+  labs(
+    title = "Predicted Corruption Index by Lagged Aid and Sector",
+    x = "Lagged Log Aid Commitments",
+    y = "Predicted Corruption Index",
+    caption = "Higher index = less corruption"
+  ) +
+  theme_minimal()
+
+
+
+
+d4_clean <- d4 %>%
+  group_by(countryname, sector) %>%
+  arrange(year, .by_group = TRUE) %>%
+  ungroup() %>%
+  filter(!is.na(aid_lag1))
+
+model7 <- feols(
+  index ~ aid_lag1 * sector | countryname + year,
+  data = d4_clean
+)
+
+predicted3 <- ggpredict(model7, terms = c("aid_lag1", "sector"))
+head(predicted3)
+plot2 <- ggplot(predicted3, aes(x = x, y = predicted, color = group)) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    title = "Predicted Corruption Index by Lagged Aid and Sector",
+    x = "Lagged Log Aid Commitments",
+    y = "Predicted Corruption Index",
+    color = "Sector",
+    fill = "Sector"
+  ) +
+  theme_minimal()
+
+d4_clean1 <- d4 %>%
+  group_by(countryname, sector) %>%
+  arrange(year, .by_group = TRUE) %>%
+  ungroup() %>%
+  filter(!is.na(aid_lag2))
+
+model8 <- feols(
+  index ~ aid_lag2 * sector | countryname + year,
+  data = d4_clean1
+)
+
+predicted4 <- ggpredict(model8, terms = c("aid_lag2", "sector"))
+head(predicted3)
+plot3 <- ggplot(predicted3, aes(x = x, y = predicted, color = group)) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    title = "Predicted Corruption Index by Lagged Aid and Sector",
+    x = "Lagged Log Aid Commitments",
+    y = "Predicted Corruption Index",
+    color = "Sector",
+    fill = "Sector"
+  ) +
+  theme_minimal()
+
+d4_clean2 <- d4 %>%
+  group_by(countryname, sector) %>%
+  arrange(year, .by_group = TRUE) %>%
+  ungroup() %>%
+  filter(!is.na(aid_lag3))
+
+model9 <- feols(
+  index ~ aid_lag3 * sector | countryname + year,
+  data = d4_clean2
+)
+
+predicted5 <- ggpredict(model9, terms = c("aid_lag3", "sector"))
+head(predicted3)
+plot4 <- ggplot(predicted5, aes(x = x, y = predicted, color = group)) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    title = "Predicted Corruption Index by Lagged Aid and Sector",
+    x = "Lagged Log Aid Commitments",
+    y = "Predicted Corruption Index",
+    color = "Sector",
+    fill = "Sector"
+  ) +
+  theme_minimal()
+
+d4_clean3 <- d4 %>%
+  group_by(countryname, sector) %>%
+  arrange(year, .by_group = TRUE) %>%
+  ungroup() %>%
+  filter(!is.na(aid_lag5))
+
+model10 <- feols(
+  index ~ aid_lag5 * sector | countryname + year,
+  data = d4_clean3
+)
+
+predicted6 <- ggpredict(model10, terms = c("aid_lag5", "sector"))
+head(predicted3)
+plot5 <- ggplot(predicted6, aes(x = x, y = predicted, color = group)) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    title = "Predicted Corruption Index by Lagged Aid and Sector",
+    x = "Lagged Log Aid Commitments",
+    y = "Predicted Corruption Index",
+    color = "Sector",
+    fill = "Sector"
+  ) +
+  theme_minimal()
+
+d4_clean4 <- d4 %>%
+  group_by(countryname, sector) %>%
+  arrange(year, .by_group = TRUE) %>%
+  ungroup() %>%
+  filter(!is.na(aid_lead1))
+
+model11 <- feols(
+  index ~ aid_lead1 * sector | countryname + year,
+  data = d4_clean4
+)
+
+predicted7 <- ggpredict(model11, terms = c("aid_lead1", "sector"))
+head(predicted3)
+plot6 <- ggplot(predicted7, aes(x = x, y = predicted, color = group)) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    title = "Predicted Corruption Index by Lagged Aid and Sector",
+    x = "Lagged Log Aid Commitments",
+    y = "Predicted Corruption Index",
+    color = "Sector",
+    fill = "Sector"
+  ) +
+  theme_minimal()
+
+plot1 log_aid
+plot2 lag1
+plot3 lag2
+plot4 lag3
+plot5 lag5
+plot6 lead1
 ```
 This graph displays aggregated mean corruption index scores and aggregated mean commitments on a common scale for all countries that received over the timescale 1996-2012. The scale is meaningless, only the trend suggests some level of correlation between the changing levels of aid and corruption measures. A better correlation would be established my lagging the independent variable, aid commitments.
 
@@ -272,5 +590,4 @@ Think about "most likely" design? Such that in worse case scenarios effect not o
 ---
 
 #6. Discussion and Policy Implications
-
 
