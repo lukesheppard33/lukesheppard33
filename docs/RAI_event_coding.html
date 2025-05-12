@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Luke Sheppard">
+<meta name="dcterms.date" content="2025-03-24">
+
+<title>RAI_event_coding – Luke Sheppard</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Luke Sheppard</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./Final2.html"> 
+<span class="menu-text">Final Project</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">RAI_event_coding</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Luke Sheppard </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 24, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_knit<span class="sc">$</span><span class="fu">set</span>(<span class="at">root.dir =</span> <span class="st">"C:/Users/lukes/Documents"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#trade_agreement_exchange</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">=</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">"C:/Users/lukes/OneDrive/Documents/RAI_retrain_trade_agreement_exchange.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting date in E3210 / R3210C5: got '2015-12-14 21:19:39'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in R3210 / R3210C18: '12'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in S3210 / R3210C19: '2015'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting date in E4047 / R4047C5: got '2021-10-12 12:47:45.000000'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in R4047 / R4047C18: '10'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in S4047 / R4047C19: '2021'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AA4628 / R4628C27: got 'corruption'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in R5041 / R5041C18: '8'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in S5041 / R5041C19: '2023'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting date in E8109 / R8109C5: got '2013-01-30 13:06:18'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in R8109 / R8109C18: '1'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in S8109 / R8109C19: '2013'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AA8354 / R8354C27: got 'corruption'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting date in E8853 / R8853C5: got '2020-05-04 14:59:19'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in R8853 / R8853C18: '5'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in S8853 / R8853C19: '2020'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting date in E9141 / R9141C5: got '2015-11-15 10:36:30'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in R9141 / R9141C18: '11'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in S9141 / R9141C19: '2015'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>datm <span class="ot">=</span> dat <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">_id</span><span class="st">`</span>, title_translated, maintext_translated) <span class="sc">%&gt;%</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gpt_coding =</span> <span class="st">""</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bullet =</span> <span class="fu">paste0</span>(<span class="st">"* "</span>, </span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                         title_translated, <span class="st">": "</span>, </span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">str_sub</span>(maintext_translated, <span class="dv">1</span>, <span class="dv">600</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">all_bullets =</span> <span class="fu">paste</span>(bullet, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(all_bullets)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>prompt <span class="ot">=</span> <span class="st">"I have an important coding task that I would like you to complete. I'm going to give you a list of news articles that have been translated into English. For each article, I'll give you the title and a chunk of the main text. Please read the text that I provide and code each article according to the definition below.</span><span class="sc">\n</span><span class="st"> </span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; Articles reporting on efforts by governments to increase the amount of trade or economic exchange with a separate country. This can also refer to the cancellation of such efforts.</span><span class="sc">\n</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="st">For each article, provide a 'Yes' or 'No' answer indicating whether the article meets the definition. Please give 1 sentence describing your reasoning."</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(prompt, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, datm) <span class="sc">%&gt;%</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_lines</span>(<span class="st">'C:/Users/lukes/OneDrive/Documents/gpt_input.txt'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#trade_financial_sanction </span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>dat2 <span class="ot">=</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">"C:/Users/lukes/OneDrive/Documents/RAI_retrain_trade_financial_sanction.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC1018 / R1018C55: got 'Yes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC1383 / R1383C55: got 'Yes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC1662 / R1662C55: got 'Yes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC2247 / R2247C55: got 'Yes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC3349 / R3349C55: got 'Yes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC3465 / R3465C55: got 'Yes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC3606 / R3606C55: got 'Yes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC3730 / R3730C55: got 'Yes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC4748 / R4748C55: got 'Yes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC4909 / R4909C55: got 'Yes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC5146 / R5146C55: got 'Yes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC5664 / R5664C55: got 'Yes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC5911 / R5911C55: got 'Yes'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC6011 / R6011C55: got 'Yes'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>datm2 <span class="ot">=</span> dat2 <span class="sc">%&gt;%</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">_id</span><span class="st">`</span>, title_translated, maintext_translated) <span class="sc">%&gt;%</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gpt_coding =</span> <span class="st">""</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1801</span><span class="sc">:</span><span class="dv">1901</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bullet =</span> <span class="fu">paste0</span>(<span class="st">"* "</span>, </span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>                         title_translated, <span class="st">": "</span>, </span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">str_sub</span>(maintext_translated, <span class="dv">1</span>, <span class="dv">600</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">all_bullets =</span> <span class="fu">paste</span>(bullet, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(all_bullets)</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>prompt2 <span class="ot">=</span> <span class="st">"I have an important coding task that I would like you to complete. I'm going to give you a list of news articles that have been translated into English. For each article, I'll give you the title and a chunk of the main text. Please read the text that I provide and code each article according to the definition below.</span><span class="sc">\n</span><span class="st"> </span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; Articles reporting on efforts by one government to restrict or regulate economic engagement or financial transactions with individuals, companies, or government entities in another country. This can also refer to the cancellation of such efforts.</span><span class="sc">\n</span></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="st">For each article, provide a 'Yes' or 'No' answer indicating whether the article meets the definition. Please give 1 sentence describing your reasoning."</span></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(prompt2, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, datm2) <span class="sc">%&gt;%</span></span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_lines</span>(<span class="st">'C:/Users/lukes/OneDrive/Documents/gpt_input2.txt'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">#diplomatic_action</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>dat3 <span class="ot">=</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">"C:/Users/lukes/OneDrive/Documents/RAI_retrain_diplomatic_sanction.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BE2561 / R2561C57: got '{'event_type': '-999',
+'model_outputs': {'arrest': 0.13557128608226776, 'censor': 6.1675801277160645,
+'changeelection': -0.679749608039856, 'changepower': -1.2847003936767578,
+'cooperate': -1.3361151218414307, 'coup': -0.8574044108390808,
+'defamationcase': 4.59182596206665, 'disaster': -0.9660359621047974,
+'legalaction': 0.4317234456539154, 'legalchange': -0.7210500240325928,
+'martiallaw': -1.3049715757369995, 'mobilizesecurity': -1.0599943399429321,
+'praise': -1.3049304485321045, 'protest': -1.9663665294647217, 'purge':
+3.7084970474243164, 'raid': -0.031079888343811035, 'threaten':
+2.1573638916015625, 'violencelethal': -2.2111730575561523, 'violencenonlethal':
+-1.457012414932251}}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BE4333 / R4333C57: got '{'event_type':
+'legalaction', 'model_outputs': {'arrest': -0.9762803912162781, 'censor':
+-0.10845392942428589, 'changeelection': -0.4161930978298187, 'changepower':
+-0.6381020545959473, 'cooperate': -0.6125684976577759, 'coup':
+-0.66546630859375, 'defamationcase': -0.5302752256393433, 'disaster':
+-0.4237976670265198, 'legalaction': 10.936620712280273, 'legalchange':
+-0.31373661756515503, 'martiallaw': -0.18379223346710205, 'mobilizesecurity':
+-0.3045966923236847, 'praise': -1.6449419260025024, 'protest':
+-0.8685363531112671, 'purge': -0.6554224491119385, 'raid': -0.3188605010509491,
+'threaten': 0.07089179009199142, 'violencelethal': -0.3087983727455139,
+'violencenonlethal': -1.3571451902389526}}'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>datm3 <span class="ot">=</span> dat3 <span class="sc">%&gt;%</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">_id</span><span class="st">`</span>, title_translated, maintext_translated) <span class="sc">%&gt;%</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gpt_coding =</span> <span class="st">""</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1802</span><span class="sc">:</span><span class="dv">2002</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bullet =</span> <span class="fu">paste0</span>(<span class="st">"* "</span>, </span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>                         title_translated, <span class="st">": "</span>, </span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">str_sub</span>(maintext_translated, <span class="dv">1</span>, <span class="dv">600</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">all_bullets =</span> <span class="fu">paste</span>(bullet, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(all_bullets)</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>prompt3 <span class="ot">=</span> <span class="st">"I have an important coding task that I would like you to complete. I'm going to give you a list of news articles that have been translated into English. For each article, I'll give you the title and a chunk of the main text. Please read the text that I provide and code each article according to the definition below.</span><span class="sc">\n</span><span class="st"> </span></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; Articles reporting on the implementation or removal of punitive diplomatic actions or restrictions imposed by one country on another country’s government or citizens, including things like expelling diplomats or imposing travel bans. This excludes trade and financial sanctions.</span><span class="sc">\n</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a><span class="st">For each article, provide a 'Yes' or 'No' answer indicating whether the article meets the definition. Please give 1 sentence describing your reasoning."</span></span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(prompt3, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, datm3) <span class="sc">%&gt;%</span></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_lines</span>(<span class="st">'C:/Users/lukes/OneDrive/Documents/gpt_input3.txt'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co">#foreign_aid_assistance</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>dat4 <span class="ot">=</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">"C:/Users/lukes/OneDrive/Documents/RAI_retrain_economic_aid_assistance.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BD2229 / R2229C56: got '{'event_type': 'censor'}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in R2410 / R2410C18: '10'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in S2410 / R2410C19: '2021'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BD2611 / R2611C56: got '{'event_type':
+'legalaction'}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BD4217 / R4217C56: got '{'event_type':
+'cooperate'}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting date in E4984 / R4984C5: got '2013-01-16 18:34:15'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in R4984 / R4984C18: '1'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in S4984 / R4984C19: '2013'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting date in E5721 / R5721C5: got '2015-08-25 17:04:20'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in R5721 / R5721C18: '8'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in S5721 / R5721C19: '2015'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>datm4 <span class="ot">=</span> dat4 <span class="sc">%&gt;%</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">_id</span><span class="st">`</span>, title_translated, maintext_translated) <span class="sc">%&gt;%</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gpt_coding =</span> <span class="st">""</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1400</span><span class="sc">:</span><span class="dv">1600</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bullet =</span> <span class="fu">paste0</span>(<span class="st">"* "</span>, </span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>                         title_translated, <span class="st">": "</span>, </span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">str_sub</span>(maintext_translated, <span class="dv">1</span>, <span class="dv">600</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">all_bullets =</span> <span class="fu">paste</span>(bullet, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(all_bullets)</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>prompt4 <span class="ot">=</span> <span class="st">"I have an important coding task that I would like you to complete. I'm going to give you a list of news articles that have been translated into English. For each article, I'll give you the title and a chunk of the main text. Please read the text that I provide and code each article according to the definition below.</span><span class="sc">\n</span><span class="st"> </span></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; Articles reporting on the provision of aid by one nation to another, including humanitarian aid, development assistance, and economic support. This can also refer to the refusal or withdrawal of such assistance.</span><span class="sc">\n</span></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a><span class="st">For each article, provide a 'Yes' or 'No' answer indicating whether the article meets the definition. Please give 1 sentence describing your reasoning."</span></span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(prompt4, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, datm4) <span class="sc">%&gt;%</span></span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_lines</span>(<span class="st">'C:/Users/lukes/OneDrive/Documents/gpt_input4.txt'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co">#diplomatic_statement</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>dat5 <span class="ot">=</span> readxl<span class="sc">::</span><span class="fu">read_xlsx</span>(<span class="st">"C:/Users/lukes/OneDrive/Documents/RAI_retrain_diplomatic_statement.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ1009 / R1009C52: got '{'GBR': [{'name': 'United
+Kingdom of Great Britain and Northern Ireland', 'lat': 54.75844, 'lon':
+-2.69531}, {'name': 'London', 'lat': 51.50853, 'lon': -0.12574}], 'GHA':
+[{'name': 'Republic of Ghana', 'lat': 8.1, 'lon': -1.2}, {'name': 'Techiman',
+'lat': 7.59054, 'lon': -1.93947}, {'name': 'Sunyani', 'lat': 7.33991, 'lon':
+-2.32676}, {'name': 'Kumasi', 'lat': 6.68848, 'lon': -1.62443}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ1161 / R1161C52: got '{'None': [{'name': 'North
+America', 'lat': 46.07323, 'lon': -100.54688}], 'SYR': [{'name': 'Syrian Arab
+Republic', 'lat': 35.0, 'lon': 38.0}, {'name': 'Damascus', 'lat': 33.5102,
+'lon': 36.29128}], 'USA': [{'name': 'United States', 'lat': 39.76, 'lon':
+-98.5}, {'name': 'Geneva', 'lat': 41.88753, 'lon': -88.30535}, {'name':
+'Washington', 'lat': 38.89511, 'lon': -77.03637}], 'IRQ': [{'name': 'Republic
+of Iraq', 'lat': 33.0, 'lon': 44.0}], 'RUS': [{'name': 'Russian Federation',
+'lat': 60.0, 'lon': 100.0}], 'FRA': [{'name': 'Republic of France', 'lat':
+46.0, 'lon': 2.0}], 'GBR': [{'name': 'United Kingdom of Great Britain and
+Northern Ireland', 'lat': 54.75844, 'lon': -2.69531}], 'CHN': [{'name':
+'People’s Republic of China', 'lat': 35.0, 'lon': 105.0}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ2393 / R2393C52: got '{'GHA': [{'name':
+'Republic of Ghana', 'lat': 8.1, 'lon': -1.2}, {'name': 'Kumasi', 'lat':
+6.68848, 'lon': -1.62443}, {'name': 'Accra', 'lat': 5.55602, 'lon': -0.1969}],
+'GBR': [{'name': 'England', 'lat': 52.16045, 'lon': -0.70312}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ2789 / R2789C52: got '{'None': [{'name':
+'Africa', 'lat': 7.1881, 'lon': 21.09375}], 'GHA': [{'name': 'Republic of
+Ghana', 'lat': 8.1, 'lon': -1.2}], 'NGA': [{'name': 'Federal Republic of
+Nigeria', 'lat': 10.0, 'lon': 8.0}], 'UGA': [{'name': 'Republic of Uganda',
+'lat': 1.25, 'lon': 32.5}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ2873 / R2873C52: got '{'ZWE': [{'name':
+'Republic of Zimbabwe', 'lat': -19.0, 'lon': 29.75}], 'GHA': [{'name':
+'Republic of Ghana', 'lat': 8.1, 'lon': -1.2}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting date in E2884 / R2884C5: got '2020-07-21 06:00:10'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in R2884 / R2884C18: '7'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in S2884 / R2884C19: '2020'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ2892 / R2892C52: got '{'SOM': [{'name':
+'Somalia', 'lat': 6.0, 'lon': 48.0}, {'name': 'Mogadishu', 'lat': 2.03711,
+'lon': 45.34375}], 'KEN': [{'name': 'Republic of Kenya', 'lat': 1.0, 'lon':
+38.0}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ3006 / R3006C52: got '{'None': [{'name':
+'Middle East', 'lat': 33.13906, 'lon': 35.85869}, {'name': 'Mediterranean Sea',
+'lat': 35.0, 'lon': 20.0}], 'SYR': [{'name': 'Syrian Arab Republic', 'lat':
+35.0, 'lon': 38.0}, {'name': 'Damascus', 'lat': 33.5102, 'lon': 36.29128}],
+'USA': [{'name': 'United States', 'lat': 39.76, 'lon': -98.5}, {'name':
+'Washington', 'lat': 38.89511, 'lon': -77.03637}, {'name': 'Paris', 'lat':
+33.66094, 'lon': -95.55551}, {'name': 'East Damascus Church', 'lat': 34.48037,
+'lon': -84.66188}], 'RUS': [{'name': 'Russian Federation', 'lat': 60.0, 'lon':
+100.0}], 'CHN': [{'name': 'People’s Republic of China', 'lat': 35.0, 'lon':
+105.0}], 'IRQ': [{'name': 'Republic of Iraq', 'lat': 33.0, 'lon': 44.0}],
+'AFG': [{'name': 'Islamic Republic of Afghanistan', 'lat': 33.0, 'lon': 66.0}],
+'IRN': [{'name': 'Islamic Republic of Iran', 'lat': 32.0, 'lon': 53.0}], 'SDN':
+[{'name': 'Red Sea', 'lat': 19.96667, 'lon': 35.66667}], 'ZAF': [{'name':
+'Cradle of Human Kind', 'lat': -25.96716, 'lon': 27.66245}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ3253 / R3253C52: got '{'IRN': [{'name':
+'Islamic Republic of Iran', 'lat': 32.0, 'lon': 53.0}, {'name': 'Tehran',
+'lat': 35.69439, 'lon': 51.42151}], 'USA': [{'name': 'United States', 'lat':
+39.76, 'lon': -98.5}, {'name': 'Gulf', 'lat': 35.56043, 'lon': -79.28169}],
+'PAK': [{'name': 'Islamic Republic of Pakistan', 'lat': 30.0, 'lon': 70.0}],
+'CHN': [{'name': 'West Asia Hotel Shanghai', 'lat': 31.1166, 'lon':
+121.3666}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ3553 / R3553C52: got '{'GHA': [{'name':
+'Republic of Ghana', 'lat': 8.1, 'lon': -1.2}, {'name': 'Accra', 'lat':
+5.55602, 'lon': -0.1969}], 'NER': [{'name': 'Zabarma', 'lat': 15.0365, 'lon':
+5.2915}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in BC3582 / R3582C55: got '{'event_type': '-999',
+'model_outputs': {'arrest': -1.2418807744979858, 'censor': -0.700724720954895,
+'changeelection': -1.0759074687957764, 'changepower': -1.4224684238433838,
+'cooperate': 8.14583969116211, 'coup': -0.8475239276885986, 'defamationcase':
+-0.8646481037139893, 'disaster': -0.7078813910484314, 'legalaction':
+-0.5665888786315918, 'legalchange': -0.6159770488739014, 'martiallaw':
+-0.9246089458465576, 'mobilizesecurity': 0.4047561585903168, 'praise':
+-0.1770450472831726, 'protest': -0.9768483638763428, 'purge':
+-0.6250648498535156, 'raid': -0.6408867239952087, 'threaten':
+4.845041275024414, 'violencelethal': -0.8023790717124939, 'violencenonlethal':
+-0.48415619134902954}}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ4139 / R4139C52: got '{'SYR': [{'name': 'Syrian
+Arab Republic', 'lat': 35.0, 'lon': 38.0}], 'SAU': [{'name': 'Kingdom of Saudi
+Arabia', 'lat': 25.0, 'lon': 45.0}], 'IRQ': [{'name': 'Republic of Iraq',
+'lat': 33.0, 'lon': 44.0}], 'LBY': [{'name': 'Libya', 'lat': 28.0, 'lon':
+17.0}], 'USA': [{'name': 'United States', 'lat': 39.76, 'lon': -98.5}, {'name':
+'Geneva', 'lat': 41.88753, 'lon': -88.30535}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ4192 / R4192C52: got '{'None': [{'name':
+'Africa', 'lat': 7.1881, 'lon': 21.09375}], 'NGA': [{'name': 'Federal Republic
+of Nigeria', 'lat': 10.0, 'lon': 8.0}], 'NER': [{'name': 'Republic of Niger',
+'lat': 18.0, 'lon': 9.0}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ4782 / R4782C52: got '{'None': [{'name':
+'Africa', 'lat': 7.1881, 'lon': 21.09375}], 'GHA': [{'name': 'Republic of
+Ghana', 'lat': 8.1, 'lon': -1.2}, {'name': 'Kasoa', 'lat': 5.53449, 'lon':
+-0.41679}, {'name': 'Abakwa', 'lat': 5.50242, 'lon': -0.6425}, {'name':
+'Swedru', 'lat': 5.53711, 'lon': -0.69984}], 'AGO': [{'name': 'Republic of
+Angola', 'lat': -12.5, 'lon': 18.5}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ4977 / R4977C52: got '{'GHA': [{'name':
+'Republic of Ghana', 'lat': 8.1, 'lon': -1.2}, {'name': 'Accra', 'lat':
+5.55602, 'lon': -0.1969}], 'NGA': [{'name': 'Federal Republic of Nigeria',
+'lat': 10.0, 'lon': 8.0}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ5048 / R5048C52: got '{'None': [{'name':
+'Africa', 'lat': 7.1881, 'lon': 21.09375}], 'NGA': [{'name': 'Federal Republic
+of Nigeria', 'lat': 10.0, 'lon': 8.0}], 'GHA': [{'name': 'Republic of Ghana',
+'lat': 8.1, 'lon': -1.2}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ5407 / R5407C52: got '{'LBN': [{'name':
+'Lebanon', 'lat': 33.83333, 'lon': 35.83333}], 'ISR': [{'name': 'State of
+Israel', 'lat': 31.5, 'lon': 34.75}], 'USA': [{'name': 'United States', 'lat':
+39.76, 'lon': -98.5}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting date in E5840 / R5840C5: got '2020-02-19 19:09:53'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in R5840 / R5840C18: '2'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Coercing text to numeric in S5840 / R5840C19: '2020'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ6083 / R6083C52: got '{'GHA': [{'name':
+'Republic of Ghana', 'lat': 8.1, 'lon': -1.2}, {'name': 'Abaka', 'lat':
+5.30305, 'lon': -1.17698}], 'BRA': [{'name': 'Santa Maria', 'lat': -29.68417,
+'lon': -53.80694}]}'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Expecting logical in AZ6111 / R6111C52: got '{'LAO': [{'name': 'Lao
+People’s Democratic Republic', 'lat': 18.0, 'lon': 105.0}], 'GHA': [{'name':
+'Republic of Ghana', 'lat': 8.1, 'lon': -1.2}]}'</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>datm5 <span class="ot">=</span> dat5 <span class="sc">%&gt;%</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">`</span><span class="at">_id</span><span class="st">`</span>, title_translated, maintext_translated) <span class="sc">%&gt;%</span></span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gpt_coding =</span> <span class="st">""</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1400</span><span class="sc">:</span><span class="dv">1600</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bullet =</span> <span class="fu">paste0</span>(<span class="st">"* "</span>, </span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a>                         title_translated, <span class="st">": "</span>, </span>
+<span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">str_sub</span>(maintext_translated, <span class="dv">1</span>, <span class="dv">600</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">all_bullets =</span> <span class="fu">paste</span>(bullet, <span class="at">collapse =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(all_bullets)</span>
+<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-11"><a href="#cb83-11" aria-hidden="true" tabindex="-1"></a>prompt5 <span class="ot">=</span> <span class="st">"I have an important coding task that I would like you to complete. I'm going to give you a list of news articles that have been translated into English. For each article, I'll give you the title and a chunk of the main text. Please read the text that I provide and code each article according to the definition below.</span><span class="sc">\n</span><span class="st"> </span></span>
+<span id="cb83-12"><a href="#cb83-12" aria-hidden="true" tabindex="-1"></a><span class="st">&gt; Articles reporting on a public statement made by members or representatives of one country’s government about the actions of another country’s government, citizens, or firms.</span><span class="sc">\n</span></span>
+<span id="cb83-13"><a href="#cb83-13" aria-hidden="true" tabindex="-1"></a><span class="st">For each article, provide a 'Yes' or 'No' answer indicating whether the article meets the definition. Please give 1 sentence describing your reasoning."</span></span>
+<span id="cb83-14"><a href="#cb83-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-15"><a href="#cb83-15" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(prompt5, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, datm5) <span class="sc">%&gt;%</span></span>
+<span id="cb83-16"><a href="#cb83-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">write_lines</span>(<span class="st">'C:/Users/lukes/OneDrive/Documents/gpt_input5.txt'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
