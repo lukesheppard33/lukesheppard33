@@ -18,7 +18,7 @@ format:
 
 editor: source
 project:
-  output-dir: "C:/Users/lukes/OneDrive/Documents/Github/lukesheppard33"
+  output-dir: docs
 ---
 #1. Introduction
 
@@ -255,7 +255,7 @@ My sector hypotheses predict that aid by sector will have differing effects on p
 
 Causality is difficult to establish at this scale. Besides the nationalized measures of corruption and aid flows restricting causal inference, aid and corruption are inextricably linked and threaten reverse causality. For one empirical extension to support my causal hypotheses, I will lag the independent variable, aid flows, by various measures including 1, 2, 3, and 5 year lags to show similar effects and whether these effects persist i.e. does aid in 2010 affect trust in 2011, 2012, 2013, etc. Similarly, I will lead the independent variable to estimate whether reverse causality is a threat to causal inference i.e. does aid in 2010 affect trust in 2009. 
 
-Finally, another empirical extension includes certain countries, worst-case scenarios, where corruption runs rampant reliably. Thus effective or ineffective aid should have clear effects on countries most susceptible to elite or petty capture which otherwise should be expected to have stable corruption scores across time. As a robustness check, I also utilize an alternative corruption perception index from Transparency International.
+As a robustness check, I also utilize an alternative corruption perception index from Transparency International.
  
 ---
 
@@ -379,10 +379,6 @@ The main coefficient expresses the change in the corruption index on the -2.5 to
 #| message: false
 #| warning: false
 #| include: true
-
-#Transparency international data as robustness check, different scoring system over a different time period (2010-2019) and includes region measure to disaggregate results by region. 
-#Further extension of worst-case scenario, country from aid-data with worst rating? looking specifically at some countries with different contexts to see if results hold up. Chose countries randomly or select based on verifiable characteristics????
-#Robustness check
 
 library(ggeffects)
 library(ggplot2)

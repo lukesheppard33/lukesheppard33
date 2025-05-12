@@ -1,4 +1,8 @@
 ---
 title: "Personal Website"
+
+editor: source
+project:
+  output-dir: docs
 ---
 Introduction 
