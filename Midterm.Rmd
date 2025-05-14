@@ -1,0 +1,113 @@
+---
+title: "Quiz6"
+author: "Luke Sheppard"
+date: "2025-03-03"
+output: html_document
+---
+
+```{r setup}
+knitr::opts_knit$set(root.dir = "C:/Users/lukes/Dropbox/PSCI3803")
+```
+
+```{r}
+library("haven")
+library("foreign")
+pew <- read.spss('C:/Users/lukes/Dropbox/PSCI3803/RawData/ATP W153_no geo.sav', use.value.labels = TRUE, to.data.frame = TRUE)
+library(haven)
+library("dplyr")
+library("tidyverse")
+library("survey")
+library("sjlabelled")
+library("margins")
+library("stargazer")
+```
+
+```{r}
+#Dependent variable
+table(pew$VOTEGEN24_W153)
+table(pew$VOTEGEN24_LEAN_W153)
+
+pew <- pew %>% mutate(vote = case_when(
+    VOTEGEN24_W153 == "Donald Trump, the Republican" ~ 1,
+    VOTEGEN24_LEAN_W153 == "Lean more toward Donald Trump" ~ 1,
+    VOTEGEN24_W153 == "Kamala Harris, the Democrat" ~ 0,
+    VOTEGEN24_LEAN_W153 == "Lean more toward Kamala Harris" ~ 0,
+    VOTEGEN24_LEAN_W153 == "None/Other candidate" ~ NA,
+    VOTEGEN24_LEAN_W153 == "Don't know/Refused/Web blank" ~ NA,
+  ))
+table(pew$vote, useNA = "always")
+
+#Independent variable 
+table(pew$F_VET1)
+pew <- pew %>% mutate(vet = case_when(
+    F_VET1 == "Yes, self" ~ 1,
+    F_VET1 == "Yes, someone else in household" ~ 0,
+    F_VET1 == "Yes, both myself and someone else" ~ 1,
+    F_VET1 == "No, nobody in household" ~ 0,
+    F_VET1 == "Refused" ~ NA,
+  ))
+table(pew$vet, useNA ="always")
+
+pew$F_VET1 <- as.factor(pew$F_VET1)
+pew$F_VET1 <- relevel(pew$F_VET1, ref = "No, nobody in household")
+
+#Control variables
+levels(pew$F_AGECAT)[levels(pew$F_AGECAT) == "Refused"] <- NA
+levels(pew$F_EDUCCAT)[levels(pew$F_EDUCCAT) == "Refused"] <- NA
+levels(pew$F_GENDER)[levels(pew$F_GENDER) == "Refused"] <- NA
+levels(pew$F_GENDER)[levels(pew$F_GENDER) == "In some other way"] <- NA
+levels(pew$F_RACETHNMOD)[levels(pew$F_RACETHNMOD) == "Refused"] <- NA
+
+pew <- pew %>% mutate(age = F_AGECAT)
+pew <- pew %>% mutate(educ = F_EDUCCAT)
+pew <- pew %>% mutate(race = F_RACETHNMOD)
+pew <- pew %>% mutate(gender = F_GENDER)
+
+table(pew$age)
+table(pew$educ)
+pew$educ <- relevel(pew$educ, ref = "H.S. graduate or less")
+table(pew$gender)
+table(pew$race)
+
+install.packages("summarytools")
+library(summarytools)
+dfSummary(pew)
+
+library(vtable)
+table_subset <- subset(pew, select=c("vote","vet", "age", "educ", "gender", "race"))
+sumtable(table_subset, title= 'Table 1: Descriptive Statistics', factor.numeric = TRUE)
+
+#Regressions
+#1
+output <- lm(vote ~ vet, data = pew, weights = WEIGHT_W153)
+summary(output)
+
+#2
+output2 <- lm(vote ~ vet + age + educ + gender + race, data = pew, weights = WEIGHT_W153)
+summary(output2)
+
+#3
+output3 <- glm(vote ~ vet + age + educ + gender + race, family=binomial(link="probit"), data = pew, weights = WEIGHT_W153)
+summary(output3)
+summary(margins(output3))
+
+#4
+output4 <- lm(vote ~ vet*race + vet*gender + educ + age, data = pew, weights = WEIGHT_W153)
+summary(output4)
+
+output5 <- lm(vote ~ vet*age + educ + gender + race, data = pew, weights = WEIGHT_W153)
+summary(output5)
+
+output6 <- lm(vote ~ vet*educ + race + gender + age, data = pew, weights = WEIGHT_W153)
+summary(output6)
+
+labels <- c("OLS", "OLS 2", "Probit", "OLS H1", "OLS H2", "OLS H3")
+stargazer(output, output2, output3, output5, output6, output4, type = "text", title = "Table 2: Regression Results", dep.var.caption = "Vote Choice", column.labels = labels, column.separate = c(1, 1, 1, 1, 1, 1), dep.var.labels.include = FALSE, model.names = FALSE)
+
+sink("descriptive_statistics.html")
+stargazer(output, output2, output3, output4, output5, output6, type = "html", title = "Table 2: Regression Results", dep.var.caption = "Vote Choice", column.labels = labels, column.separate = c(1, 1, 1, 1, 1, 1), dep.var.labels.include = FALSE, model.names = FALSE)
+sink()
+```
+
+
+

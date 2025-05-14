@@ -1,0 +1,420 @@
+---
+title: "Final Project"
+author: "Luke Sheppard"
+date: "2025-04-29"
+output: html_document
+---
+
+```{r setup}
+knitr::opts_knit$set(root.dir = "C:/Users/lukes/Dropbox/PSCI3803")
+```
+
+```{r}
+library("haven")
+library("readxl")
+library("dplyr")
+library("tidyverse")
+library("survey")
+library("sjlabelled")
+library("sandwich")
+library("plm")
+library("car")
+library("AER")
+library("did")
+library("panelView")
+library("janitor")
+library("readr")
+library("stringr")
+library("margins")
+library("stargazer")
+```
+
+```{r}
+#Creating dependent and control variables dataset
+#unzip("Final.zip", list = TRUE)
+#unzip("Final.zip", exdir = "temp_data")
+
+seats <- read_excel("C:/Users/lukes/Dropbox/PSCI3803/temp_data/SeatsDataset/SeatsDataset.xlsx")
+elect <- read_excel("C:/Users/lukes/Dropbox/PSCI3803/temp_data/ElectionDataset/ElectionDataset.xlsx")
+
+#Excluding uncontested seats and seats without general elections (Contested only in primary)
+seats <- seats %>%
+  mutate(uncontested = replace_na(uncontested, "C")) %>%
+  filter(uncontested != c("U","R")) %>%
+  filter(VoteGeneral != is.na(VoteGeneral))
+
+#Excluding multi-seat elections
+elect <- elect %>%
+  filter(numcandidates != 1) %>%
+  filter(electtype %in% 1:4) %>%
+  rename(seatid = seatid1) %>%
+  filter(is.na(seatid2)) %>%
+  filter(is.na(seatid3)) %>%
+  select(-state, -year, -stateid, -CourtType)
+
+#Combining the datasets on seatid, excluding elections before 2000
+combined <- left_join(seats, elect, by = "seatid")
+combined <- combined %>%
+  select(-seatid2, -seatid3)
+
+#Dropping all candidates beyond top 2
+cols_to_drop <- grep("^.*[0]$|^.*[3-9]$|^.*1[0-9]$|^.*2[0-2]$", names(combined), value = TRUE)
+if(length(cols_to_drop) > 0) {
+  combined <- combined[, !(names(combined) %in% cols_to_drop)]
+}
+
+combined <- combined %>%
+  select(c(seatid, year, state, stateid, Candidates, incumbent, correlation, TotalVoteCount, VoteRatio, CandName1, CandName2, votes1, votes2, CandType1, CandType2, Party1, Party2)) 
+
+#Shifting dataset long to by candidate rather than election
+combined2 <- combined %>%
+  pivot_longer(
+    cols = matches(".*[1-2]$"),  # Match all columns ending in 1–2
+    names_to = c(".value", "candidate_number"),
+    names_pattern = "(.*)([1-2])$"
+  ) %>%
+  filter(!is.na(CandName)) %>%
+  rename(candidate = CandName) %>%
+  mutate(party = replace(Party, is.na(Party), 4)) %>%
+  select(-Party) %>%
+  mutate(year = as.character(year),
+         party = as.character(party)
+  )
+  
+#Fixing naming for joining
+combined2$candidate <- tools::toTitleCase(tolower(combined2$candidate))
+suffixes <- c("Jr.", "Sr.", "II", "III", "IV", "V", "lii", "Iv", "Iii", "JR", "SR", "j")
+combined2$last_word <- word(combined2$candidate, -1)
+combined2$last <- ifelse(combined2$last_word %in% suffixes,
+                       word(combined2$candidate, -2),
+                       combined2$last_word)
+combined2$first <- word(combined2$candidate, 1)
+combined2$last_word <- NULL
+combined2 <- combined2 %>%
+  mutate(first = str_to_lower(str_squish(first)),
+         last = str_to_lower(str_squish(last)))
+
+combined2$candidate_number <- as.integer(combined2$candidate_number)
+```
+
+```{r}
+#Creating independent variables dataset
+
+#Cleaning FollowTheMoney dataset
+lines <- read_lines("C:/Users/lukes/Dropbox/PSCI3803/Campaign.csv")
+header <- str_split(lines[1], ",")[[1]]
+data <- lines[-1] %>%
+  str_remove_all('"') %>%
+  str_split_fixed(",", length(header)) %>%
+  as.data.frame()
+colnames(data) <- header
+
+data <- data %>%
+  rename(
+    incumbent = `Incumbency_Status:id`,
+    party2 = `General_Party:token`,
+    party = Specific_Party,
+    status = Candidate_Entity,
+    first = `Candidate_Entity:token`,
+    last = Candidate,
+    total = `Total_$`,
+    election = Election_Status,
+    result = `Status_of_Candidate:token`,
+    state = Election_Jurisdiction,
+    year = Election_Year,
+    type = Incumbency_Status
+)
+data$total <- as.numeric(data$total)
+data <- data %>%
+  select(-matches("(_)?(id|token)$"))
+data$status <- sub(".*-","", data$status)
+
+data <- data %>%
+  filter(status %in% c("General", "General Runoff"))
+
+#Fixing name columns for joining
+data$last <- ifelse(data$last %in% suffixes,
+                       word(data$last, -2),
+                       data$last)
+data <- data %>%
+  mutate(first = str_to_lower(str_squish(first)),
+         last = str_to_lower(str_squish(last)))
+
+data <- data %>%
+  select(c(first, last, result, state, year, party2, party, incumbent, type, total)) 
+
+#Cleaning FollowTheMoney dataset for independent spending
+lines2 <- read_lines("C:/Users/lukes/Dropbox/PSCI3803/Independent2.csv")
+header2 <- str_split(lines2[1], ",")[[1]]
+i <- lines2[-1] %>%
+  str_remove_all('"') %>%
+  str_split_fixed(",", length(header2)) %>%
+  as.data.frame()
+colnames(i) <- header2
+
+i <- i %>%
+  rename(
+    result = Election_Status,
+    first = `Election_Status:token`,
+    last = `Candidate`,
+    i_records = `#_of_Records`,
+    i_total = `Total_$`,
+    state = Filing_Jurisdiction,
+    year = Filing_Year,
+    position = `General_Party:token`,
+    party = `General_Party:id`,
+    party2 = General_Party
+)
+
+i <- i %>%
+  select(c(first, last, state, result, year, position, party, party2, i_total)) 
+i$result <- sub(".*-","", i$result)
+i$i_total <- as.numeric(i$i_total)
+
+#Significant maintained assumption that unknown disbursements do not disrupt data
+i <- i %>%
+  filter(result %in% c("General", "General Runoff"),
+         position %in% c("Support", "Oppose"),
+         i_total != 0) %>%
+  select(-result)
+
+i <- i %>%
+  pivot_wider(
+    names_from = position,   # "for" or "against"
+    values_from = i_total   # numeric amount
+  )
+
+#Fixing name columns for joining
+i$last <- ifelse(i$last %in% suffixes,
+                       word(i$last, -2),
+                       i$last)
+i$last <- str_remove(i$last, "\\s+(JR\\.|SR\\.|II|III|IV|V|JR|SR)$")
+i <- i %>%
+  mutate(first = str_to_lower(str_squish(first)),
+         last = str_to_lower(str_squish(last)))
+i$year <- as.numeric(i$year)
+data$year <- as.numeric(data$year)
+
+secret <- left_join(data, i, by = c("state", "year", "party", "party2", "last"))
+```
+
+```{r}
+#Final dataset, fuzzy matching based on naming convention errors
+library("fuzzyjoin")
+combined2$year <- as.numeric(combined2$year)
+
+final <- stringdist_inner_join(
+  combined2, secret,
+  by = c("state", "year", "party", "last"),
+  method = "jw",    # Jaro-Winkler (better for names)
+  max_dist = 0.15   # Lower values mean stricter matching (tune this!)
+)
+
+final <- final %>%
+  rename(year = year.x,
+         state = state.x,
+         party = party.x,
+         last = last.x,
+         incumbent = incumbent.y
+  )
+final <- final %>%
+  select(-year.y, -state.y, -party.y, -last.y, -first.y, -incumbent.x, -first.x)
+  
+final2 <- final %>%
+  group_by(seatid) %>%
+  arrange(seatid, desc(votes)) %>%  # assumes higher votes is better
+  slice(1:2) %>%  # keep top 2 candidates
+  mutate(
+    rank = row_number()
+  ) %>%
+  select(-candidate_number) %>%
+  pivot_wider(
+    names_from = rank,
+    values_from = c(candidate, votes, CandType, party, result, last, first, party2, incumbent, type, total, Support, Oppose)
+  ) %>%
+  mutate(
+    vote_ratio = votes_1 / votes_2  # winner over runner-up
+  )
+
+#Removing duplicates from the merge
+duplicated_rows <- final2 %>% filter(duplicated(seatid))
+final2 <- final2 %>% distinct(seatid, .keep_all = TRUE)
+
+#Creating final variables
+final2 <- final2 %>%
+  mutate(total_ratio = (total_1/total_2),
+         i_total_ratio = ((Support_1+Oppose_2)/(Support_2+Oppose_1)),
+         incumbent = case_when(
+           incumbent_1 == "I" ~ 1,
+           incumbent_1 == "O" ~ 0,
+           incumbent_1 == "C" ~ -1,
+           TRUE ~ NA
+         ))
+
+#Differentiating Citizens United and Dobbs Decision
+final2 <- final2 %>%
+  mutate(Post_CU = case_when(
+      year <= 2009 ~ 0,
+      year >= 2010 ~ 1,
+      TRUE ~ NA),
+        Post_Dobbs = case_when(
+      year <= 2021 ~ 0,
+      year >= 2022 ~ 1,
+      TRUE ~ NA)
+  )
+```
+
+
+```{r}
+#Graphical representation
+plot1 <- ggplot(final2, aes(x = log10_total, y = share, color = type, shape = General_Party)) +
+  geom_point() +  # Adds points for each candidate
+#geom_smooth(method = "lm", se = FALSE, aes(group = interaction(type, party)), color = "black") +
+  labs(
+    title = "Candidate Vote Share vs. Campaign Financing in State Supreme Court Elections",
+    x = "Logistic Campaign Financing ($)",
+    y = "Vote Share (%)",
+    color = "Incumbency Status",
+    shape = "Party"
+  ) +
+  theme_minimal() +
+  scale_color_manual(values = c("blue", "red", "green")) +  # Customize incumbent vs non-incumbent colors
+  scale_shape_manual(values = c(16, 17, 18))  
+ggsave("plot1.png", plot = plot1, width = 8, height = 6, dpi = 300)
+
+
+plot2 <- ggplot(final2, aes(x = log10_total, y = share, color = type, shape = General_Party)) +
+  geom_point() +
+  facet_wrap(~ year_period) +
+  labs(
+    title = "Candidate Vote Share vs. Campaign Financing in State Supreme Court Elections by Year",
+    x = "Logistic Campaign Financing ($)",
+    y = "Vote Share (%)",
+    color = "Incumbency Status",
+    shape = "Party"
+  ) +
+  theme_minimal()
+ggsave("plot2.png", plot = plot2, width = 8, height = 6, dpi = 300)
+
+
+plot3 <- ggplot(final2, aes(x = log10_total, y = share)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = TRUE, color = "blue") +
+  facet_wrap(~ year_period) +
+  labs(
+    title = "Candidate Vote Share vs. Campaign Financing in State Supreme Court Elections by Year",
+    x = "Logistic Campaign Financing ($)",
+    y = "Vote Share (%)"
+  ) +
+  theme_minimal()
+ggsave("plot3.png", plot = plot3, width = 8, height = 6, dpi = 300)
+#facet_grid
+```
+
+```{r}
+library(summarytools)
+dfSummary(final)
+
+#There exists some funding outliers which are probably more representative of errors in data rather than funding ratios in the hundreds or thousands
+final2 <- final2[final2$total_ratio <= 20,]
+
+library(vtable)
+table_subset <- subset(final2, select=c("vote_ratio","total_ratio", "i_total_ratio", "incumbent", "state", "Post_CU", "Post_Dobbs"))
+sumtable(table_subset, title= 'Table 1: Descriptive Statistics', factor.numeric = TRUE)
+
+#Regressions
+#1 Bivariate
+output <- lm(vote_ratio ~ total_ratio, data = final2)
+summary(output)
+
+#2 Multivariate-Incumbent
+output2 <- lm(vote_ratio ~ total_ratio + incumbent, data = final2)
+summary(output2)
+
+#3 Multivariate-Time
+output3 <- lm(vote_ratio ~ total_ratio*Post_CU + total_ratio*Post_Dobbs, data = final2)
+summary(output3)
+
+#4 Fixed Effects
+pdata <- pdata.frame(final2, index = c("state", "year"))
+output4 <- plm(vote_ratio ~ total_ratio*Post_CU + total_ratio*Post_Dobbs + incumbent, data = pdata, model = "within", effect = "individual")
+summary(output4)
+coeftest(output4, vcov = vcovHC(output4, type = "HC1", cluster = "group"))
+
+labels <- c("Bivariate", "OLS 2", "OLS 3", "Fixed Effects")
+stargazer(output, output2, output3, output4, type = "text", title = "Table 2: Regression Results", dep.var.caption = "Vote Ratio", column.labels = labels, column.separate = c(1, 1, 1, 1, 1, 1), dep.var.labels.include = FALSE, model.names = FALSE)
+
+```
+
+```{r}
+#Marginal effects graphs
+library(ggeffects)
+
+p <- ggpredict(output, terms = c("total_ratio"))
+ggplot(p, aes(x = x, y = predicted)) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = 0.2, color = NA) +
+  labs(
+    title = "Predicted Vote Ratio by Funding Ratio",
+    x = "Funding Ratio",
+    y = "Vote Ratio"
+  ) +
+  theme_minimal()
+
+p2 <- ggpredict(output2, terms = c("total_ratio", "incumbent"))
+ggplot(p2, aes(x = x, y = predicted, color = group)) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    title = "Predicted Vote Ratio by Funding Ratio by Incumbent Status",
+    x = "Funding Ratio",
+    y = "Vote Ratio",
+    color = "Incumbent",
+    fill = "Incumbent"
+  ) +
+  theme_minimal()
+
+p3 <- ggpredict(output3, terms = c("total_ratio", "Post_CU"))
+ggplot(p3, aes(x = x, y = predicted, color = group)) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    title = "Predicted Vote Ratio by Funding Ratio by Citizens United",
+    x = "Funding Ratio",
+    y = "Vote Ratio"
+  ) +
+  theme_minimal()
+
+p4 <- ggpredict(output3, terms = c("total_ratio", "Post_Dobbs"))
+ggplot(p4, aes(x = x, y = predicted, color = group)) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    title = "Predicted Vote Ratio by Funding Ratio by Dobbs Decision",
+    x = "Funding Ratio",
+    y = "Vote Ratio"
+  ) +
+  theme_minimal()
+
+p5 <- ggpredict(output4, terms = c("total_ratio", "incumbent", "Post_CU"))
+ggplot(p5, aes(x = x, y = predicted, color = group)) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    title = "Predicted Vote Ratio by Funding Ratio by Citizens United",
+    x = "Funding Ratio",
+    y = "Vote Ratio"
+  ) +
+  theme_minimal()
+
+p6 <- ggpredict(output4, terms = c("total_ratio", "incumbent", "Post_Dobbs"))
+ggplot(p6, aes(x = x, y = predicted, color = group)) +
+  geom_line(size = 1.2) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high, fill = group), alpha = 0.2, color = NA) +
+  labs(
+    title = "Predicted Vote Ratio by Funding Ratio by Dobbs Decision",
+    x = "Funding Ratio",
+    y = "Vote Ratio"
+  ) +
+  theme_minimal()
+```
